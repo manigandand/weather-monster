@@ -1,2 +1,3 @@
 # weather-monster
-Simple wether forecast system 
+
+Simple wether forecast system

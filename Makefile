@@ -10,7 +10,7 @@ GO_TEST_VERBOSE=$(GO_CMD) test -v
 GO_TEST_COVER=$(GO_CMD) test -cover -count=1 -p=1
 GO_INSTALL=$(GO_CMD) install -v
 
-SERVER_BIN=wether_monster
+SERVER_BIN=weather_monster
 SERVER_BIN_DIR=.
 SERVER_DIR=.
 SERVER_MAIN=main.go

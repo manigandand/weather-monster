@@ -1,0 +1,44 @@
+# Docker Compose file Reference (https://docs.docker.com/compose/compose-file/)
+
+version: "3"
+
+# Define services
+services:
+  weather_monster:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: weather_monster_api
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+    depends_on:
+      - postgres
+    environment:
+      - ENV=dev
+      - PORT=8080
+      - DB_DRIVER=postgres
+      # db source env is sourced in docker image itself, no need to override
+    networks:
+      - weather_monster_network
+
+  postgres:
+    image: postgres:latest
+    container_name: postgres_db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=weather_monster
+      # - DATABASE_HOST=127.0.0.1
+    ports:
+      - "5432:5432"
+    volumes:
+      - database_postgres:/var/lib/postgresql/data
+    networks:
+      - weather_monster_network
+
+volumes:
+  database_postgres:
+
+networks:
+  weather_monster_network:

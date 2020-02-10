@@ -159,7 +159,7 @@ var _ = Describe("Temperature API test suite", func() {
 					res, err = tClient.PostWebhooks(req)
 					Expect(err).ShouldNot(HaveOccurred())
 				})
-				It("should fail", func() {
+				It("should not fail", func() {
 					jsonErr := json.NewDecoder(res.Body).Decode(&response)
 					Expect(jsonErr).ShouldNot(HaveOccurred())
 					fmt.Println(response)
@@ -190,7 +190,7 @@ var _ = Describe("Temperature API test suite", func() {
 					res, err = tClient.PostWebhooks(req)
 					Expect(err).ShouldNot(HaveOccurred())
 				})
-				It("should fail", func() {
+				It("should not fail", func() {
 					jsonErr := json.NewDecoder(res.Body).Decode(&response)
 					Expect(jsonErr).ShouldNot(HaveOccurred())
 					fmt.Println(response)

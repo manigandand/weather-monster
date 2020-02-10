@@ -24,7 +24,11 @@ type Cities interface {
 }
 
 // Temperatures store interface expose the Temperatures db methods
-type Temperatures interface{}
+type Temperatures interface {
+	All() ([]*schema.Temperature, *errors.AppError)
+	Create(tem *schema.Temperature) (*schema.Temperature, *errors.AppError)
+	GetByCityID(cityID uint) ([]*schema.Temperature, *errors.AppError)
+}
 
 // Forecasts store interface expose the Forecasts db methods
 type Forecasts interface{}

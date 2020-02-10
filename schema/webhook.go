@@ -6,6 +6,7 @@ type Webhook struct {
 	BaseSchema
 	// CityID is the foreign key; Belongs to `city` table.
 	CityID      uint   `json:"city_id" sql:"not null"`
+	City        *City  `json:"city,omitempty"`
 	CallbackURL string `json:"callback_url" sql:"not null"`
 	Deleted     bool   `json:"deleted" sql:"default:false"`
 }

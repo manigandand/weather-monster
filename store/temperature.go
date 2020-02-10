@@ -2,6 +2,7 @@ package store
 
 import (
 	"fmt"
+	"weather-monster/pkg/errors"
 	"weather-monster/schema"
 )
 
@@ -41,4 +42,33 @@ func (ts *TemperatureStore) createIndexesIfNotExists() {
 			}
 		}
 	}
+}
+
+// All returns all the available temperature data for all the available cities
+func (ts *TemperatureStore) All() ([]*schema.Temperature, *errors.AppError) {
+	var tems []*schema.Temperature
+	if err := ts.DB.Preload("City").Find(&tems).Error; err != nil {
+		return nil, errors.InternalServerStd().AddDebug(err)
+	}
+
+	return tems, nil
+}
+
+// Create a new temperature record for the city
+func (ts *TemperatureStore) Create(tem *schema.Temperature) (*schema.Temperature, *errors.AppError) {
+	if err := ts.DB.Save(tem).Error; err != nil {
+		return nil, errors.InternalServerStd().AddDebug(err)
+	}
+
+	return tem, nil
+}
+
+// GetByCityID returns all the temp data for the city
+func (ts *TemperatureStore) GetByCityID(cityID uint) ([]*schema.Temperature, *errors.AppError) {
+	var tems []*schema.Temperature
+	if err := ts.DB.Preload("City").Find(&tems, "city_id=?", cityID).Error; err != nil {
+		return nil, errors.InternalServerStd().AddDebug(err)
+	}
+
+	return tems, nil
 }

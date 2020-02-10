@@ -85,3 +85,16 @@ func getCityTemperatureHandler(w http.ResponseWriter, r *http.Request) *errors.A
 	respond.OK(w, temps)
 	return nil
 }
+
+func getCityWebhookHandler(w http.ResponseWriter, r *http.Request) *errors.AppError {
+	ctx := r.Context()
+	cityID, _ := ctx.Value("cityID").(uint)
+
+	webhooks, err := store.Webhook().GetByCityID(cityID)
+	if err != nil {
+		return err
+	}
+
+	respond.OK(w, webhooks)
+	return nil
+}

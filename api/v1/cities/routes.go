@@ -30,4 +30,5 @@ func cityIDSubRoutes(r chi.Router) {
 	r.Method(http.MethodDelete, "/", api.Handler(deleteCityHandler))
 
 	r.Method(http.MethodGet, "/temperature", api.Handler(getCityTemperatureHandler))
+	r.Method(http.MethodGet, "/webhooks", api.Handler(getCityWebhookHandler))
 }

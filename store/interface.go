@@ -34,4 +34,10 @@ type Temperatures interface {
 type Forecasts interface{}
 
 // Webhooks store interface expose the Webhooks db methods
-type Webhooks interface{}
+type Webhooks interface {
+	All() ([]*schema.Webhook, *errors.AppError)
+	Create(req *schema.Webhook) (*schema.Webhook, *errors.AppError)
+	GetByID(webhookID uint) (*schema.Webhook, *errors.AppError)
+	GetByCityID(cityID uint) ([]*schema.Webhook, *errors.AppError)
+	Delete(webhookID uint) *errors.AppError
+}

@@ -1,5 +1,11 @@
 package schema
 
+import (
+	"net/url"
+	"strings"
+	"weather-monster/pkg/errors"
+)
+
 // Webhook schema holds the all the webhook records,
 // to post the weather reports
 type Webhook struct {
@@ -13,5 +19,15 @@ type Webhook struct {
 
 // Ok implements the Ok interface, it validates city input
 func (c *Webhook) Ok() error {
+	switch {
+	case c.CityID == 0:
+		return errors.IsRequiredErr("city id")
+	case strings.TrimSpace(c.CallbackURL) == "":
+		return errors.IsRequiredErr("call back url")
+	}
+	if _, err := url.Parse(c.CallbackURL); err != nil {
+		return err
+	}
+
 	return nil
 }

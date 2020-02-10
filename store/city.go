@@ -66,7 +66,7 @@ func (cs *CityStore) All() ([]*schema.City, *errors.AppError) {
 
 // Create a new city
 func (cs *CityStore) Create(req *schema.CityReq) (*schema.City, *errors.AppError) {
-	if recordExists("cities", fmt.Sprintf("name='%s'", req.Name)) {
+	if recordExists("cities", fmt.Sprintf("name='%s' and deleted_at=null", req.Name)) {
 		return nil, errors.BadRequest("city name alreay registered")
 	}
 

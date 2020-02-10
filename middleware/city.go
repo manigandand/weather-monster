@@ -14,8 +14,9 @@ import (
 // Store holds new store connection
 var Store *store.Conn
 
-func init() {
-	Store = store.NewStore()
+// Init ...
+func Init(st *store.Conn) {
+	Store = st
 }
 
 // CityRequired validates

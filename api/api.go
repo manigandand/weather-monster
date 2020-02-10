@@ -3,12 +3,11 @@ package api
 import (
 	"net/http"
 	"time"
+	"weather-monster/middleware"
 	"weather-monster/pkg/errors"
 	"weather-monster/pkg/respond"
 	"weather-monster/pkg/trace"
 	"weather-monster/store"
-
-	"github.com/gorilla/context"
 )
 
 // Store holds new store connection
@@ -37,6 +36,7 @@ func InitService(name, version string) {
 	}
 
 	Store = store.NewStore()
+	middleware.Init(Store)
 }
 
 // API Handler's ---------------------------------------------------------------
@@ -46,8 +46,6 @@ type Handler func(w http.ResponseWriter, r *http.Request) *errors.AppError
 
 func (f Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	err := f(w, r)
-	// clear gorilla context
-	defer context.Clear(r)
 	if err != nil {
 		// APP Level Error
 		trace.Log.Infof("ServiceName: %s, StatusCode: %d, Error: %s\n DEBUG: %+v\n",
@@ -59,11 +57,12 @@ func (f Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 // Basic Handler func ---------------------------------------------------------------
 
 // IndexHandeler common index handler for all the service
-func IndexHandeler(w http.ResponseWriter, r *http.Request) {
+func IndexHandeler(w http.ResponseWriter, r *http.Request) *errors.AppError {
 	respond.OK(w, map[string]string{
 		"name":    serviceInfo.Name,
 		"version": serviceInfo.Version,
 	})
+	return nil
 }
 
 // HealthHandeler return basic service info

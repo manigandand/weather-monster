@@ -50,14 +50,14 @@ func BadRequest(message string) *AppError { // 400
 }
 
 // Unauthorized will return `http.StatusUnauthorized` with custom message.
-func Unauthorized(message string) *AppError { // 401
-	return NewAppError(http.StatusUnauthorized, message)
-}
+// func Unauthorized(message string) *AppError { // 401
+// 	return NewAppError(http.StatusUnauthorized, message)
+// }
 
 // Forbidden will return `http.StatusForbidden` with custom message.
-func Forbidden(message string) *AppError { // 403
-	return NewAppError(http.StatusForbidden, message)
-}
+// func Forbidden(message string) *AppError { // 403
+// 	return NewAppError(http.StatusForbidden, message)
+// }
 
 // NotFound will return `http.StatusNotFound` with custom message.
 func NotFound(message string) *AppError { // 404

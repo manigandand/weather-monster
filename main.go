@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"net/http"
 	"weather-monster/api"
-	v1 "weather-monster/api/v1"
 	"weather-monster/config"
 	appmiddleware "weather-monster/middleware"
 	"weather-monster/pkg/trace"
@@ -20,6 +19,7 @@ var (
 )
 
 func main() {
+	config.Initialize()
 	api.InitService(name, version)
 	trace.Setup(config.Env)
 
@@ -47,9 +47,10 @@ func main() {
 	)
 
 	// Initialize the version 1 routes of the API
-	router.Get("/", api.IndexHandeler)
-	router.Get("/top", api.HealthHandeler)
-	router.Route("/v1", v1.Init)
+	// router.Get("/", api.IndexHandeler)
+	// router.Get("/top", api.HealthHandeler)
+	// router.Route("/v1", v1.Init)
+	router.Route("/", api.Routes)
 
 	trace.Log.Infof("Starting %s:%s on port :%s\n", name, version, config.Port)
 	http.ListenAndServe(fmt.Sprintf(":%s", config.Port), router)

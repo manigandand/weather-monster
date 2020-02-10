@@ -22,7 +22,15 @@ var (
 	DBDataSource string
 )
 
-func init() {
+// TEST Credentials ------------------------------------------------------------
+var (
+	TestDBDriver     = "postgres"
+	TestDBDataSource = "user=postgres password=postgres dbname=postgres sslmode=disable host=localhost"
+	// docker run -d -p 5432:5432 --name my-postgres -e POSTGRES_PASSWORD=postgres postgres
+)
+
+// Initialize ...
+func Initialize() {
 	GetAllEnv()
 }
 

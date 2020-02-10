@@ -13,7 +13,9 @@ import (
 
 var dbConn *gorm.DB
 
-func init() {
+// Init ...
+func Init() {
+	fmt.Println(config.DBDriver, config.DBDataSource)
 	db, err := gorm.Open(config.DBDriver, config.DBDataSource)
 	if err != nil {
 		log.Fatal(err)
@@ -37,6 +39,7 @@ type Conn struct {
 
 // NewStore inits new store connection
 func NewStore() *Conn {
+	Init()
 	conn := &Conn{
 		DB: dbConn,
 	}

@@ -1,7 +1,6 @@
 package store
 
 import (
-	"fmt"
 	"time"
 	"weather-monster/pkg/errors"
 	"weather-monster/schema"
@@ -25,8 +24,8 @@ func (fs *ForecastStore) ByCityID(cityID uint) (*schema.Forecast, *errors.AppErr
 	)
 
 	query := `
-	ROUND(AVG(min),2) as min,
-	ROUND(AVG(max),2) as max,
+	COALESCE(ROUND(AVG(min),2),0) as min,
+	COALESCE(ROUND(AVG(max),2),0) as max,
 	COUNT(*) as sample
 	`
 	now := time.Now().Unix()
@@ -36,7 +35,6 @@ func (fs *ForecastStore) ByCityID(cityID uint) (*schema.Forecast, *errors.AppErr
 		return nil, errors.InternalServerStd().AddDebug(err)
 	}
 
-	fmt.Println(min, max, sample)
 	return &schema.Forecast{
 		CityID: cityID,
 		Min:    min,

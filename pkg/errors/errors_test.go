@@ -1,6 +1,7 @@
 package errors_test
 
 import (
+	"errors"
 	"net/http"
 	. "weather-monster/pkg/errors"
 
@@ -43,12 +44,22 @@ var _ = Describe("Errors", func() {
 		Expect(err.Error()).To(Equal("client time out"))
 	})
 	It("Should check for not found error", func() {
-		err := NotFound("recipe not found for the given key")
+		err := NotFound("recipe not found for the given key").AddDebug(errors.New("404"))
 		Expect(err.Status).To(Equal(http.StatusNotFound))
 		Expect(err.Error()).To(Equal("recipe not found for the given key"))
 		Ω(err.IsStatusNotFound()).Should(BeTrue())
 
 		err = InternalServer("client time out")
 		Ω(err.IsStatusNotFound()).Should(BeFalse())
+	})
+	It("error helper methods", func() {
+		er := IsRequiredErr("name")
+		Expect(er.Error()).To(Equal("name is required"))
+
+		err := InternalServerStd()
+		Ω(err.IsInternalServerError()).Should(BeTrue())
+
+		err = BadRequest("client time out")
+		Ω(err.IsBadRequest()).Should(BeTrue())
 	})
 })

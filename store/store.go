@@ -1,6 +1,7 @@
 package store
 
 import (
+	"fmt"
 	"log"
 	"weather-monster/config"
 
@@ -30,7 +31,9 @@ type Conn struct {
 
 // NewStore inits new store connection
 func NewStore() *Conn {
-	conn := new(Conn)
+	conn := &Conn{
+		DB: dbConn,
+	}
 	conn.CityConn = NewCityStore(conn)
 	conn.TemperatureConn = NewTemperatureStore(conn)
 	conn.ForecastsConn = NewForecastStore(conn)
@@ -57,4 +60,13 @@ func (s *Conn) Forecast() Forecasts {
 // Webhook implements the store interface and it returns the Webhooks interface
 func (s *Conn) Webhook() Webhooks {
 	return s.WebhooksConn
+}
+
+func getCommonIndexes(tableName string) map[string]string {
+	idx := fmt.Sprintf("idx_%s", tableName)
+	return map[string]string{
+		fmt.Sprintf("%s_created_at", idx): "created_at",
+		fmt.Sprintf("%s_updated_at", idx): "updated_at",
+		fmt.Sprintf("%s_deleted_at", idx): "deleted_at",
+	}
 }

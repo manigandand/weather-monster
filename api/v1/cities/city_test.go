@@ -11,7 +11,7 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-var _ = Describe("City", func() {
+var _ = Describe("City API Test Suite", func() {
 	Context("GET /v1/cities", func() {
 		When("no cities", func() {
 			var (
@@ -94,7 +94,7 @@ var _ = Describe("City", func() {
 				res, err = tClient.PostCities(req)
 				Expect(err).ShouldNot(HaveOccurred())
 			})
-			It("should fail", func() {
+			It("should create a city", func() {
 				jsonErr := json.NewDecoder(res.Body).Decode(&response)
 				Expect(jsonErr).ShouldNot(HaveOccurred())
 				fmt.Println(response)

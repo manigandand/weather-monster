@@ -2,7 +2,7 @@ package schema
 
 // Temperature schema holds the all the weather records for the city
 type Temperature struct {
-	baseSchema
+	BaseSchema
 	// CityID is the foreign key; Belongs to `city` table.
 	CityID    uint  `json:"city_id" sql:"not null"`
 	Min       int   `json:"min"`

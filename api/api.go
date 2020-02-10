@@ -6,9 +6,13 @@ import (
 	"weather-monster/pkg/errors"
 	"weather-monster/pkg/respond"
 	"weather-monster/pkg/trace"
+	"weather-monster/store"
 
 	"github.com/gorilla/context"
 )
+
+// Store holds new store connection
+var Store *store.Conn
 
 // ServiceInfo stores basic service information
 type ServiceInfo struct {
@@ -31,6 +35,8 @@ func InitService(name, version string) {
 		Uptime:  time.Now(),
 		Epoch:   time.Now().Unix(),
 	}
+
+	Store = store.NewStore()
 }
 
 // API Handler's ---------------------------------------------------------------

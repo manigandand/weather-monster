@@ -2,6 +2,7 @@ package store
 
 import (
 	"fmt"
+	"weather-monster/pkg/errors"
 	"weather-monster/schema"
 )
 
@@ -49,4 +50,28 @@ func (cs *CityStore) createIndexesIfNotExists() {
 			}
 		}
 	}
+}
+
+// All returns all the cities
+func (cs *CityStore) All() ([]*schema.City, *errors.AppError) {
+	var cities []*schema.City
+	if err := cs.DB.Find(&cities, "deleted=?", false).Error; err != nil {
+		return nil, errors.InternalServerStd().AddDebug(err)
+	}
+
+	return cities, nil
+}
+
+// Create a new city
+func (cs *CityStore) Create(req *schema.CityReq) (*schema.City, *errors.AppError) {
+	city := &schema.City{
+		Name:      req.Name,
+		Latitude:  req.Latitude,
+		Longitude: req.Longitude,
+	}
+	if err := cs.DB.Save(city).Error; err != nil {
+		return nil, errors.InternalServerStd().AddDebug(err)
+	}
+
+	return city, nil
 }

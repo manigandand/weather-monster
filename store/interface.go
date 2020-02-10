@@ -1,5 +1,10 @@
 package store
 
+import (
+	"weather-monster/pkg/errors"
+	"weather-monster/schema"
+)
+
 // Store global store interface - provides db intercae methods
 // for diff entities
 type Store interface {
@@ -10,7 +15,10 @@ type Store interface {
 }
 
 // Cities store interface expose the city db methods
-type Cities interface{}
+type Cities interface {
+	All() ([]*schema.City, *errors.AppError)
+	Create(req *schema.CityReq) (*schema.City, *errors.AppError)
+}
 
 // Temperatures store interface expose the Temperatures db methods
 type Temperatures interface{}

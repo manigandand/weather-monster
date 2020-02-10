@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"weather-monster/config"
+	"weather-monster/schema"
 
 	"github.com/jinzhu/gorm"
 	// gorm postgres connection
@@ -18,6 +19,11 @@ func init() {
 		log.Fatal(err)
 	}
 	dbConn = db
+	db.AutoMigrate(
+		&schema.City{},
+		&schema.Temperature{},
+		&schema.Webhook{},
+	)
 }
 
 // Conn struct holds the store connection

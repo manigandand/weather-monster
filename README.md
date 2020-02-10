@@ -8,18 +8,18 @@ Postman Documentation: https://documenter.getpostman.com/view/1310922/SWTK3Z2F?v
 
 Demo Link: https://www.loom.com/share/b9d70a0faaab4f9cad1d66de9058b7a9
 
-# prerequest:
+## prerequest:
 
 Please make sure you have installed `go < 1.12` versioon and `docker` to make
 this steps easier.
 
-# Run Tests
+### Run Tests
 
 ```
 ./make_test.sh
 ```
 
-# Run App
+### Run App
 
 ```
 ./make_run_app.sh

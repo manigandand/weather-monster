@@ -4,7 +4,6 @@ import (
 	"flag"
 	"os"
 	"testing"
-	"weather-monster/test"
 
 	. "github.com/onsi/ginkgo"
 )
@@ -19,6 +18,5 @@ var _ = Describe("Main Test Suite", func() {
 	BeforeEach(func() {
 	})
 	AfterEach(func() {
-		test.MainSetup()
 	}, 0.1)
 })

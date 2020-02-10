@@ -27,7 +27,10 @@ dependencies:
 
 tests:
 	@echo "==> Running tests ...";
-	@$(GO_TEST_COVER) $(SOURCE_PKG_DIR)/...
+	@$(GO_TEST_COVER) $(SOURCE_PKG_DIR)/api/...
+	@$(GO_TEST_COVER) $(SOURCE_PKG_DIR)/config
+	@$(GO_TEST_COVER) $(SOURCE_PKG_DIR)/pkg/errors
+	@$(GO_TEST_COVER) $(SOURCE_PKG_DIR)/schema
 
 build-server:
 	@echo "==> Building server ...";

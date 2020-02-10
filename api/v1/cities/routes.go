@@ -3,7 +3,7 @@ package cities
 import (
 	"net/http"
 	"weather-monster/api"
-	"weather-monster/pkg/errors"
+	"weather-monster/middleware"
 	appstore "weather-monster/store"
 
 	"github.com/go-chi/chi"
@@ -19,15 +19,13 @@ func Init(r chi.Router) {
 	// ROUTE: {host}/v1/cities
 	r.Method(http.MethodGet, "/", api.Handler(getAllCitiesHandler))
 	r.Method(http.MethodPost, "/", api.Handler(createCityHandler))
-	r.Route("/{cityID}", func(r chi.Router) {
-		// ROUTE: {host}/v1/cities/:cityID
-		// r.Use(ArticleCtx)
-		r.Method(http.MethodGet, "/", api.Handler(auctionHandler))
-		r.Method(http.MethodPatch, "/", api.Handler(auctionHandler))
-		r.Method(http.MethodDelete, "/", api.Handler(auctionHandler))
-	})
+	r.With(middleware.CityRequired).
+		Route("/{cityID:[0-9]+}", cityIDSubRoutes)
 }
 
-func auctionHandler(w http.ResponseWriter, r *http.Request) *errors.AppError {
-	return nil
+// ROUTE: {host}/v1/cities/:cityID
+func cityIDSubRoutes(r chi.Router) {
+	r.Method(http.MethodGet, "/", api.Handler(getCityHandler))
+	r.Method(http.MethodPatch, "/", api.Handler(updateCityHandler))
+	r.Method(http.MethodDelete, "/", api.Handler(deleteCityHandler))
 }

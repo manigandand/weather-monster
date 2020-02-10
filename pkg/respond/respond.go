@@ -66,6 +66,13 @@ func Created(w http.ResponseWriter, data interface{}) {
 	res.send(w)
 }
 
+// NoContent send the 204 http response
+func NoContent(w http.ResponseWriter) {
+	var res Response
+	res.Meta = Meta{Status: http.StatusNoContent}
+	res.send(w)
+}
+
 // Fail write the error response
 func Fail(w http.ResponseWriter, e *errors.AppError) {
 	var res Response

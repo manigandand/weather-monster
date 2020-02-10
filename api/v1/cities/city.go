@@ -35,3 +35,40 @@ func createCityHandler(w http.ResponseWriter, r *http.Request) *errors.AppError 
 	respond.Created(w, city)
 	return nil
 }
+
+func getCityHandler(w http.ResponseWriter, r *http.Request) *errors.AppError {
+	ctx := r.Context()
+	city, _ := ctx.Value("city").(*schema.City)
+
+	respond.OK(w, city)
+	return nil
+}
+
+func updateCityHandler(w http.ResponseWriter, r *http.Request) *errors.AppError {
+	var input schema.City
+	ctx := r.Context()
+	city, _ := ctx.Value("city").(*schema.City)
+
+	if err := utils.Decode(r, &input); err != nil {
+		return errors.BadRequest(err.Error()).AddDebug(err)
+	}
+
+	updated, err := store.City().Update(city, &input)
+	if err != nil {
+		return err
+	}
+
+	respond.OK(w, updated)
+	return nil
+}
+
+func deleteCityHandler(w http.ResponseWriter, r *http.Request) *errors.AppError {
+	ctx := r.Context()
+	cityID, _ := ctx.Value("cityID").(uint)
+
+	if err := store.City().Delete(cityID); err != nil {
+		return err
+	}
+	respond.NoContent(w)
+	return nil
+}

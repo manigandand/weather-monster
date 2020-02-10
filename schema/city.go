@@ -1,6 +1,7 @@
 package schema
 
 import (
+	err "errors"
 	"strings"
 	"weather-monster/pkg/errors"
 )
@@ -13,6 +14,18 @@ type City struct {
 	Latitude  float64 `json:"latitude"`
 	Longitude float64 `json:"longitude"`
 	Deleted   bool    `json:"deleted" sql:"default:false"`
+}
+
+// Ok implements the Ok interface, it validates city input
+func (c *City) Ok() error {
+	switch {
+	case strings.TrimSpace(c.Name) == "":
+		return errors.IsRequiredErr("name")
+	case c.Deleted:
+		return err.New("invalid request, you can't update deleted field")
+	}
+
+	return nil
 }
 
 // CityReq request payload to create/register a new city

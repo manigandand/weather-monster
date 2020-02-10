@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"weather-monster/pkg/errors"
 	"weather-monster/schema"
+
+	"github.com/jinzhu/gorm"
 )
 
 // CityStore implements the cities interface
@@ -78,4 +80,35 @@ func (cs *CityStore) Create(req *schema.CityReq) (*schema.City, *errors.AppError
 	}
 
 	return city, nil
+}
+
+// GetByID returns the matched record for the given id
+func (cs *CityStore) GetByID(cityID uint) (*schema.City, *errors.AppError) {
+	var city schema.City
+	if err := cs.DB.First(&city, "id=? and deleted=?", cityID, false).Error; err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return nil, errors.BadRequest("invalid city id").AddDebug(err)
+		}
+		return nil, errors.InternalServerStd().AddDebug(err)
+	}
+
+	return &city, nil
+}
+
+// Update the city name, lat, lon values
+func (cs *CityStore) Update(city *schema.City, update *schema.City) (*schema.City, *errors.AppError) {
+	if err := cs.DB.Model(city).Updates(update).Error; err != nil {
+		return nil, errors.InternalServerStd().AddDebug(err)
+	}
+
+	return city, nil
+}
+
+// Delete soft deletes the city for the given id
+func (cs *CityStore) Delete(cityID uint) *errors.AppError {
+	if err := cs.DB.Delete(&schema.City{}, "id=?", cityID).Error; err != nil {
+		return errors.InternalServerStd().AddDebug(err)
+	}
+
+	return nil
 }

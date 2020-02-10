@@ -18,6 +18,9 @@ type Store interface {
 type Cities interface {
 	All() ([]*schema.City, *errors.AppError)
 	Create(req *schema.CityReq) (*schema.City, *errors.AppError)
+	GetByID(cityID uint) (*schema.City, *errors.AppError)
+	Update(city *schema.City, update *schema.City) (*schema.City, *errors.AppError)
+	Delete(cityID uint) *errors.AppError
 }
 
 // Temperatures store interface expose the Temperatures db methods

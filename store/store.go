@@ -76,3 +76,11 @@ func getCommonIndexes(tableName string) map[string]string {
 		fmt.Sprintf("%s_deleted_at", idx): "deleted_at",
 	}
 }
+
+// recordExists should check if record is avail or not for particular table
+// based on the given condition.
+func recordExists(tableName, where string) (exists bool) {
+	baseQ := fmt.Sprintf("select 1 from %s where %v", tableName, where)
+	dbConn.Raw(fmt.Sprintf("select exists (%v)", baseQ)).Row().Scan(&exists)
+	return
+}

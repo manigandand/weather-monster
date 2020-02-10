@@ -64,6 +64,10 @@ func (cs *CityStore) All() ([]*schema.City, *errors.AppError) {
 
 // Create a new city
 func (cs *CityStore) Create(req *schema.CityReq) (*schema.City, *errors.AppError) {
+	if recordExists("cities", fmt.Sprintf("name='%s'", req.Name)) {
+		return nil, errors.BadRequest("city name alreay registered")
+	}
+
 	city := &schema.City{
 		Name:      req.Name,
 		Latitude:  req.Latitude,

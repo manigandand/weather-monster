@@ -15,7 +15,6 @@ var dbConn *gorm.DB
 
 // Init ...
 func Init() {
-	fmt.Println(config.DBDriver, config.DBDataSource)
 	db, err := gorm.Open(config.DBDriver, config.DBDataSource)
 	if err != nil {
 		log.Fatal(err)

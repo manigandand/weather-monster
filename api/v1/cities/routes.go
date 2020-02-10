@@ -23,9 +23,11 @@ func Init(r chi.Router) {
 		Route("/{cityID:[0-9]+}", cityIDSubRoutes)
 }
 
-// ROUTE: {host}/v1/cities/:cityID
+// ROUTE: {host}/v1/cities/:cityID/*
 func cityIDSubRoutes(r chi.Router) {
 	r.Method(http.MethodGet, "/", api.Handler(getCityHandler))
 	r.Method(http.MethodPatch, "/", api.Handler(updateCityHandler))
 	r.Method(http.MethodDelete, "/", api.Handler(deleteCityHandler))
+
+	r.Method(http.MethodGet, "/temperature", api.Handler(getCityTemperatureHandler))
 }

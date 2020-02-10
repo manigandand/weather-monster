@@ -72,3 +72,16 @@ func deleteCityHandler(w http.ResponseWriter, r *http.Request) *errors.AppError 
 	respond.NoContent(w)
 	return nil
 }
+
+func getCityTemperatureHandler(w http.ResponseWriter, r *http.Request) *errors.AppError {
+	ctx := r.Context()
+	cityID, _ := ctx.Value("cityID").(uint)
+
+	temps, err := store.Temperature().GetByCityID(cityID)
+	if err != nil {
+		return err
+	}
+
+	respond.OK(w, temps)
+	return nil
+}

@@ -31,7 +31,9 @@ type Temperatures interface {
 }
 
 // Forecasts store interface expose the Forecasts db methods
-type Forecasts interface{}
+type Forecasts interface {
+	ByCityID(cityID uint) (*schema.Forecast, *errors.AppError)
+}
 
 // Webhooks store interface expose the Webhooks db methods
 type Webhooks interface {

@@ -24,3 +24,12 @@ func (c *Temperature) Ok() error {
 
 	return nil
 }
+
+// Forecast weather of the particular city
+type Forecast struct {
+	CityID uint    `json:"city_id" sql:"not null"`
+	City   *City   `json:"city,omitempty"`
+	Min    float64 `json:"min"`
+	Max    float64 `json:"max"`
+	Sample int     `json:"sample"`
+}

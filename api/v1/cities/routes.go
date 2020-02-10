@@ -3,6 +3,7 @@ package cities
 import (
 	"net/http"
 	"weather-monster/api"
+	"weather-monster/api/v1/forecasts"
 	"weather-monster/middleware"
 	appstore "weather-monster/store"
 
@@ -31,4 +32,5 @@ func cityIDSubRoutes(r chi.Router) {
 
 	r.Method(http.MethodGet, "/temperature", api.Handler(getCityTemperatureHandler))
 	r.Method(http.MethodGet, "/webhooks", api.Handler(getCityWebhookHandler))
+	r.Method(http.MethodGet, "/forecast", api.Handler(forecasts.WeatherForecastHandler))
 }

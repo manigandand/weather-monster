@@ -1,18 +1,44 @@
 package main
 
 import (
-	"log"
-
-	"github.com/jinzhu/gorm"
-	// gorm postgres connection
-	_ "github.com/jinzhu/gorm/dialects/postgres"
+	"fmt"
+	"strconv"
+	"strings"
 )
 
 func main() {
-	dbSource := "user=postgres password=postgres dbname=postgres sslmode=disable host=localhost"
-	db, err := gorm.Open("postgres", dbSource)
-	if err != nil {
-		log.Fatal(err)
+	fmt.Println(Solution(28))
+}
+
+// Solution ...
+func Solution(N int) int {
+	if N == 0 {
+		return 0
 	}
-	log.Println(db)
+	inputSum := getSum(getInputStrList(N))
+	return findNextMatchSum(N+1, inputSum)
+}
+
+func findNextMatchSum(start, sum int) int {
+	for {
+		if getSum(getInputStrList(start)) == sum {
+			return start
+		}
+		// inc
+		start++
+	}
+}
+
+func getInputStrList(n int) []string {
+	inputStr := strconv.Itoa(n)
+	return strings.Split(inputStr, "")
+}
+
+func getSum(n []string) (sum int) {
+	for _, i := range n {
+		if v, err := strconv.Atoi(i); err == nil {
+			sum += v
+		}
+	}
+	return
 }
